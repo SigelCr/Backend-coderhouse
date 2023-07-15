@@ -1,4 +1,4 @@
-class ProductManager {
+/* class ProductManager {
   //elemento products con array vacio
   constructor() {
     this.products = [];
@@ -101,4 +101,126 @@ const productId = manager.getProductById(2);
 console.log("Producto mediante ID encontrado:", productId);
 
 //Probando que pasa si busco un producto con un ID inexistente
-const productNotFound = manager.getProductById(15);
+const productNotFound = manager.getProductById(15); */
+
+//const fs = require(`fs`);
+//4 metodos que vamos a usar para manipular archivos
+
+//sincrono
+
+//escribir un archivo
+
+/* fs.writeFileSync(`archivo.txt`, `primera linea archivo`);
+
+// leer archivo
+
+const infoArchivo = fs.readFileSync(`archivo.txt`, `utf-8`);
+console.log(infoArchivo);
+
+//existe un archivo
+
+const archivoExiste = fs.existsSync(`archivo.txt`);
+console.log(archivoExiste);
+
+// eliminar archivo
+
+fs.unlinkSync(`archivo.txt`); */
+
+/////////////////////////////////////////////
+
+//asincrona con callbacks
+
+//crear
+/* fs.writeFile(`archivoAsinc.json`, `primera info`, (error) => {
+  if (error) {
+    console.log(error);
+  } else {
+    console.log("archivo creado con exito");
+  }
+});
+
+//leer
+fs.readFile(`archivoAsync.json`, `utf-8`, (error, info) => {
+  if (error) {
+    console.log(error);
+  } else {
+    console.log(info);
+  }
+});
+
+//eliminar
+fs.unlink(`archivoAsync.json`, (error) => {
+  if (error) {
+    console.log(error);
+  } else {
+    console.log(`archivo elimnado con exito`);
+  }
+});
+ */
+
+//asincrona
+/* 
+const productos = [
+  {
+    nombre: `iphone`,
+    precio: 500,
+    stock: 40,
+  },
+  {
+    nombre: `ipad`,
+    precio: 200,
+    stock: 30,
+  },
+  {
+    nombre: `TV`,
+    precio: 500,
+    stock: 20,
+  },
+  {
+    nombre: `computador`,
+    precio: 1500,
+    stock: 10,
+  },
+];
+ */
+//crear
+
+/* fs.writeFile(`products.json`, JSON.stringify(productos), (error) => {
+  //JSON.stringify para poder crearlo correctamente
+  if (error) {
+    console.log(error);
+  } else {
+    console.log(`arcjhivp creado con exito`);
+  }
+}); */
+
+//leer
+/* fs.readFile(`products.json`, `utf-8`, (error, info) => {
+  if (error) {
+    console.log(error);
+  } else {
+    console.log(JSON.parse(info)); //pasarlo asi para verlo en formato js sino se pone como json todo con comillas
+  }
+}); */
+
+// promesas
+//.promises antes del metodo si o si
+
+//crear
+
+/* fs.promises
+  .writeFile(`productosProm.json`, JSON.stringify(productos))
+  .then(() => {
+    console.log("productos guardados");
+  })
+  .catch((error) => {
+    console.log(error);
+  }); */
+
+//leer
+/* fs.promises
+  .readFile(`productosProm.json`, `utf-8`)
+  .then((info) => console.log(JSON.parse(info)))
+  .catch((error) => console.log(error)); */
+
+// async await
