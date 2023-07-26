@@ -1,143 +1,164 @@
-import fs from "fs";
-const filePath = "src/products.json";
+import * as fs from "node:fs";
 
-// Se verifica si el archivo existe, si no existe se crea.
-if (!fs.existsSync(filePath)) {
-  fs.writeFileSync(filePath, "[]", "utf-8");
-  console.log(`Se ha creado el archivo ${filePath}`);
-}
-
-class ProductManager {
-  constructor(filePath) {
-    this.path = filePath;
-    this.products = [];
-    this.lastProductId = 0;
-    this.loadProducts();
+export class ProductManager {
+  constructor(path) {
+    this.path = path;
   }
 
-  // Carga los productos en caso de existir.
-  async loadProducts() {
+  async product() {
     try {
-      const data = await fs.promises.readFile(this.path, "utf-8");
-      this.products = JSON.parse(data);
-      this.updateLastProductId();
-    } catch (error) {
-      console.log("Error al cargar productos", error.message);
-      return null;
+      if (fs.existsSync(this.path)) {
+        // busca si hay o no archivo
+        const data = await fs.promises.readFile(this.path, "utf-8");
+        return JSON.parse(data); // consultar porque si pongo data =JSON.parse(data) da error pero usandolo en otra variable da correcto
+      } else {
+        return []; // retorna arreglo vacio para que el addproduct trabaje
+      }
+    } catch {
+      (error) => {
+        return error;
+      };
     }
   }
 
-  // Guarda los productos en el archivo.
-  async saveProducts(data) {
-    try {
-      const newData = JSON.stringify(data, null, 2);
-      await fs.promises.writeFile(this.path, newData, "utf-8");
-      console.log("Se guardaron los productos", this.path);
-    } catch (error) {
-      console.log("Error al guardar los productos", error.message);
-      return null;
-    }
-  }
-
-  // Actualiza el ID
-  updateLastProductId() {
-    if (this.products.length > 0) {
-      const lastProduct = this.products[this.products.length - 1];
-      this.lastProductId = lastProduct.id;
-    }
-  }
-
-  // Valida que todos los campos del producto estén completos y sean válidos.
-  addProduct(product) {
-    if (
-      !product.title ||
-      !product.description ||
-      !product.price ||
-      !product.thumbnail ||
-      !product.code ||
-      !product.stock
-    ) {
-      console.log("Debes completar todos los campos.");
-      return;
-    }
-
-    // Validación para que no se admita un código repetido.
-    if (this.products.some((p) => p.code === product.code)) {
-      console.log(`Ya existe un producto con el código ${product.code}.`);
-      return;
-    }
-
-    this.lastProductId++;
-    product.id = this.lastProductId;
-    this.products.push(product);
-
-    this.saveProducts(this.products)
-      .then(() => {
-        console.log(`Producto agregado: ${product.title}`);
-      })
-      .catch((error) => {
-        console.log("Error al guardar los productos", error.message);
-      });
-
-    return product;
-  }
-
-  // Método para traer el listado de productos.
   async getProducts() {
-    await this.loadProducts();
-    return this.products;
-  }
-
-  // Método para obtener un producto por su ID
-  async getProductById(id) {
-    await this.loadProducts();
-    const product = this.products.find((p) => p.id === id);
-    if (product) {
-      return product;
-    } else {
-      console.log("Producto no encontrado");
-      return null;
+    try {
+      let variablew = await this.product();
+      console.log(await variablew);
+    } catch {
+      (error) => {
+        return error;
+      };
     }
   }
 
-  // Método para actualizar el campo TITLE del producto.
-  async updateProduct(id, updatedTitle) {
-    const productToUpdate = this.products.find((p) => p.id === id);
-    if (!productToUpdate) {
-      console.log(`Producto con id ${id} no encontrado`);
-      return;
+  async addProduct(title, description, price, thumbnail, code, stock) {
+    try {
+      if (!title || !description || !price || !thumbnail || !stock || !code) {
+        //analiza si todos los campos estan llenos
+        console.log("ERROR: No todos los datos están completos.");
+        return;
+      }
+      let list = await this.product();
+      const listCode = list.find((e) => e.code === code); // busca si el code esta repetido
+      if (listCode) {
+        console.log("El código ingresado existe, por favor ingrese uno nuevo");
+        return;
+      }
+      let obj = {
+        title: title,
+        description: description,
+        price: price,
+        thumbnail: thumbnail,
+        code: code,
+        stock: stock,
+      };
+      let id;
+      if (list.length == 0) {
+        id = 1;
+      } else {
+        id = list[list.length - 1].id + 1;
+      }
+
+      list.push({ ...obj, id });
+      await fs.promises.writeFile(this.path, JSON.stringify(list));
+      console.log(`El producto con id ${id} a sido generado exitosamente`);
+    } catch {
+      (error) => {
+        console.log(error);
+      };
     }
-
-    productToUpdate.title = updatedTitle;
-
-    await this.saveProducts(this.products)
-      .then(() => {
-        console.log(
-          `Se actualiza el producto: ${JSON.stringify(productToUpdate)}`
-        );
-      })
-      .catch((error) => {
-        console.log("Error al guardar los productos", error.message);
-      });
   }
 
-  // Método para buscar un producto y eliminarlo según su index.
+  async getProductsById(id) {
+    try {
+      let list = await this.product();
+      const itemId = list.find((e) => e.id === id);
+      if (itemId) {
+        console.log(itemId);
+        return itemId;
+      } else {
+        console.log(`No hay producto con el id ${id}`);
+      }
+    } catch {
+      (error) => {
+        return error;
+      };
+    }
+  }
   async deleteProduct(id) {
-    const index = this.products.findIndex((p) => p.id === id);
-    if (index !== -1) {
-      const deletedProduct = this.products.splice(index, 1)[0];
-      await this.saveProducts(this.products)
-        .then(() => {
-          console.log(`Producto eliminado: ${deletedProduct.title}`);
-        })
-        .catch((error) => {
-          console.log("Error al guardar los productos", error.message);
-        });
-    } else {
-      console.log("Producto no encontrado.");
-      return null;
+    try {
+      let list = await this.product();
+      if (list.findIndex((e) => e.id === id) !== -1) {
+        const newList = list.filter((e) => e.id !== id);
+        await fs.promises.writeFile(this.path, JSON.stringify(newList));
+        console.log(`El producto con id ${id} a sido removido`);
+      } else {
+        console.log("El producto que intenta eliminar, no existe");
+      }
+    } catch {
+      (error) => {
+        return error;
+      };
+    }
+  }
+
+  async updateProduct(id, k) {
+    try {
+      let list = await this.product();
+      let objKey = Object.keys(k);
+      let noId = objKey.find((e) => e === "id");
+      if (noId) {
+        console.log(
+          "No se puede modificar la identificación, ingrese valores válidos"
+        );
+        return;
+      }
+      const ub = list.findIndex((e) => e.id === id);
+      if (ub !== -1) {
+        const objRaw = list[ub];
+        const objMod = { ...objRaw, ...k };
+        list[ub] = objMod;
+        console.log("cambio realizado");
+        fs.promises.writeFile(this.path, JSON.stringify(list));
+      } else {
+        console.log(`No hay producto con el id ${id}`);
+      }
+    } catch {
+      (error) => {
+        return error;
+      };
     }
   }
 }
 
-export { ProductManager };
+// TESTING
+
+const manager = new ProductManager("archivo.json");
+//ver productos agregados
+//manager.getProducts();
+//agregar productos 1x1
+//manager.addProduct("teclado ergonómico", "ergonómico", 2200, " ", 1, 22);
+//manager.addProduct("teclado multimedia", "multimedia", 1900, " ", 2, 22);
+//manager.addProduct("teclado flexible", "flexible", 2300, " ", 5, 22);
+//manager.addProduct("teclado en pantalla", "de pantalla", 2200, " ", 88, 22);
+//manager.addProduct("teclado de proyección", "protegido", 2200, " ", 4, 20);
+//manager.addProduct("teclado de membrana", "membrana", 2500, " ", 40, 20);
+//manager.addProduct("teclado capacitivos.", "capacitivos", 2400, " ", 51, 20);
+//manager.addProduct("teclado metálico", "metálico", 5000, " ", 19, 20);
+/*manager.addProduct("mouse mecánico", "tipo de mouse más antiguo", 1200, " ", 22, 20);*/
+//manager.addProduct("mouse gaming", "para videojuegos", 9200, " ", 14, 20);
+
+//export const c = manager.getProducts();
+
+//obtener producto por ID
+//manager.getProductsById(1);
+
+//actualizar producto
+//manager.updateProduct(2, { title: "hola" });
+
+//para ver el cambio en la terminal
+//manager.getProducts();
+
+//eliminar producto x id
+//manager.deleteProduct(5);
