@@ -48,6 +48,21 @@ class CoursesMongo {
       return error;
     }
   }
+
+  async deleteStudent(idCourse, idStudent) {
+    try {
+      //buscar carrito (en este caso curso)
+      const course = await coursesModel.findById(idCourse); //aca encuentra el carrito
+      if (!course) throw new Error("Course no encontrado");
+      const response = await coursesModel.updateOne(
+        { _id: idCourse },
+        { $pull: { students: idStudent } }
+      ); //pull remueve un array existente
+      return response;
+    } catch (error) {
+      return error;
+    }
+  }
 }
 
 export const coursesMongo = new CoursesMongo();

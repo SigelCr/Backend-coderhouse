@@ -6,7 +6,7 @@ class StudentsMongo {
       const response = await studentsModel.aggregate([
         //que queres que busque stage x stage en este caso la calificaion mayor a 5
         //todos los stage se basan del primero
-        { $match: { calificacion: { $gt: 5 } } },
+        { $match: { calificacion: { $gt: 1 } } },
         {
           $group: {
             _id: "$gender", //agrupo por id del genero

@@ -12,8 +12,13 @@ const coursesSchema = new mongoose.Schema({
   students: [
     //es un arreglo de object ID de la coleccon users
     {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "users",
+      id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "users",
+      },
+      quantity: {
+        type: Number,
+      },
     },
   ],
 });

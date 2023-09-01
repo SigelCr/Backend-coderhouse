@@ -1,0 +1,102 @@
+[
+  {
+    "title": "Medias",
+    "description": "Medias super abrigadas",
+    "price": 2000,
+    "thumbnail": [],
+    "code": "Producto 1",
+    "stock": 5,
+    "status": true,
+    "category": "Invierno"
+  },
+  {
+    "title": "Remera corta",
+    "description": "Remera corta para el verano",
+    "price": 3000,
+    "thumbnail": [],
+    "code": "Producto 99",
+    "stock": 5,
+    "status": true,
+    "category": "Verano"
+  },
+  {
+    "title": "Remera polar",
+    "description": "Remera polar hiper abrigada",
+    "price": 5000,
+    "thumbnail": [],
+    "code": "Producto 231",
+    "stock": 5,
+    "status": true,
+    "category": "Invierno"
+  },
+  {
+    "title": "Remera tela fina",
+    "description": "Tela muy fina",
+    "price": 3000,
+    "thumbnail": [],
+    "code": "Producto 951",
+    "stock": 5,
+    "status": true,
+    "category": "Primavera"
+  },
+  {
+    "title": "Jean",
+    "description": "Jean fino para salir",
+    "price": 6000,
+    "thumbnail": [],
+    "code": "Producto 123",
+    "stock": 5,
+    "status": true,
+    "category": "Verano"
+  },
+  {
+    "title": "Chupin",
+    "description": "Chupin fachero para encarar",
+    "price": 9000,
+    "thumbnail": [],
+    "code": "Producto 7",
+    "stock": 5,
+    "status": true,
+    "category": "Verano"
+  },
+  {
+    "title": "Campera de cuero",
+    "description": "Campero de cuerno echa a base de vacas",
+    "price": 90000,
+    "thumbnail": [],
+    "code": "Producto 999",
+    "stock": 5,
+    "status": true,
+    "category": "Invierno"
+  },
+  {
+    "title": "Chaleco",
+    "description": "Chaleco fino de jean",
+    "price": 5000,
+    "thumbnail": [],
+    "code": "Producto 657",
+    "stock": 5,
+    "status": true,
+    "category": "Verano"
+  },
+  {
+    "title": "Boxer",
+    "description": "Boxer para hombre",
+    "price": 3000,
+    "thumbnail": [],
+    "code": "Producto 974",
+    "stock": 5,
+    "status": true,
+    "category": "Verano"
+  },
+  {
+    "title": "Gorra",
+    "description": "Gorra para el sol",
+    "price": 5478,
+    "thumbnail": [],
+    "code": "Producto 394",
+    "stock": 5,
+    "status": true,
+    "category": "Primavera"
+  }
+]

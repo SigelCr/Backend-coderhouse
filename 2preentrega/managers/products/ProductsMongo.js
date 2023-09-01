@@ -1,18 +1,6 @@
-import { usersModel } from "../../db/models/users.model.js";
-//import { studentsModel as usersModel } from "../../db/models/students.model.js";
-
-class UsersMongo {
-  /*   async findAll() {
-    try {
-      const users = await usersModel.find({});
-      return users;
-    } catch (error) {
-      return error;
-    }
-  } */
-
-  //paginate
-
+import { productsModel } from "../../db/models/products.model.js";
+//EN ESTE ARCHIVO VER EL AFTER
+class ProductsMongo {
   async findAll(obj) {
     const { limit, page, sortFirstName, ...query } = obj;
     try {
@@ -40,8 +28,8 @@ class UsersMongo {
 
   async createOne(obj) {
     try {
-      const newUser = await usersModel.create(obj);
-      return newUser;
+      const newProd = await productsModel.create(obj);
+      return newProd;
     } catch (error) {
       return error;
     }
@@ -49,8 +37,8 @@ class UsersMongo {
 
   async findById(id) {
     try {
-      const user = await usersModel.findById(id);
-      return user;
+      const prod = await productsModel.findById(id);
+      return prod;
     } catch (error) {
       return error;
     }
@@ -58,8 +46,8 @@ class UsersMongo {
 
   async updateOne(id, obj) {
     try {
-      const user = await usersModel.updateOne({ _id: id }, { ...obj });
-      return user;
+      const prod = await productsModel.updateOne({ _id: id }, { ...obj });
+      return prod;
     } catch (error) {
       return error;
     }
@@ -67,32 +55,31 @@ class UsersMongo {
 
   async deleteOne(id) {
     try {
-      const response = await usersModel.findByIdAndDelete(id);
+      const response = await productsModel.findByIdAndDelete(id);
       return response;
-      //const response = await usersModel.deleteOne({_id:id})
     } catch (error) {
       return error;
     }
   }
 
-  async add(users) {
+  async add(products) {
     try {
-      await usersModel.create(users);
-      return "Users added";
+      await productsModel.create(products);
+      return "Products added";
     } catch (error) {
       return error;
     }
   }
-  //{name:"nombre"}
+
   async findOne(obj) {
     try {
-      const user = await usersModel.findOne(obj).explain("executionStats");
-      console.log(user);
-      return user;
+      const prod = await productsModel.findOne(obj).explain("executionStats");
+      console.log(prod);
+      return prod;
     } catch (error) {
       return error;
     }
   }
 }
 
-export const usersMongo = new UsersMongo();
+export const productsMongo = new ProductsMongo();

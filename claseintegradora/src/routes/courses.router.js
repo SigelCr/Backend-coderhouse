@@ -3,7 +3,14 @@ import { coursesMongo } from "../managers/courses/CoursesMongo.js";
 
 const router = Router();
 
-//router.get('/')
+router.get("/", async (req, res) => {
+  try {
+    const courses = await coursesMongo.findAll();
+    res.status(200).json({ message: "courses found", courses });
+  } catch (error) {
+    res.status(500).json({ error });
+  }
+});
 
 router.get("/:id", async (req, res) => {
   const { id } = req.params;
@@ -27,6 +34,16 @@ router.post("/", async (req, res) => {
   try {
     const newCourse = await coursesMongo.createOne(req.body);
     res.status(200).json({ message: "course created", user: newCourse });
+  } catch (error) {
+    res.status(500).json({ error });
+  }
+});
+
+router.delete("/:idCourse/students/:idStudent", async (req, res) => {
+  const { idCourse, idStudent } = req.params;
+  try {
+    const result = await coursesMongo.deleteStudent(idCourse, idStudent);
+    res.status(200).json({ message: "Succes perri" });
   } catch (error) {
     res.status(500).json({ error });
   }
